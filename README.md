@@ -1,4 +1,4 @@
-# Análisis del comercio global por internet.
+# Análisis del comercio global por internet
 
 Estamos trabajando con el dataset **"Global Super Store"**, con el que analizaremos transacciones de comercio en línea para identificar patrones de compra y métricas útiles para vendedores y consumidores.
 
