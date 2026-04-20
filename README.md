@@ -1,7 +1,7 @@
 # Análisis del comercio global por internet
 
 ## Integrantes
-- [Alberto Alessandro Gómez Blanno](https://github.com/alezzanders-ctrl) — Clave:
+- [Alberto Alessandro Gómez Blanno](https://github.com/alezzanders-ctrl) — Clave: 218823
 - [](https://github.com/usuario3) — Clave: 
 - [Paola María Orjuela Gaytán](https://github.com/paorjuela) — Clave: 216867
 
