@@ -8,13 +8,11 @@
 ## Introducción 
 ### Fuente de datos
 
-Para este proyecto se utilizan datos obtenidos de Kaggle, específicamente del conjunto [Global Super Store Dataset](https://www.kaggle.com/datasets/apoorvaappz/global-super-store-dataset/data). Este dataset fue recopilado en 2020 por Apoorva Mahalingappa, estudiante de Ciencia de Datos en el Great Lakes Institute of Management (India), con el propósito de analizar compras en línea y extraer tendencias comerciales.
-
-Las instrucciones de replicación del proyecto asumen que los datos se encuentran almacenados en formato `CSV` bajo el nombre `./data/raw_data.csv`. (CAMBIAR ESTO DESPUES AL NOMBRE QUE NOSOTROS USEMOS!!)
+Para este proyecto se utilizan datos obtenidos de Kaggle, específicamente del conjunto [Global Super Store Dataset](https://www.kaggle.com/datasets/apoorvaappz/global-super-store-dataset/data). Este dataset fue recopilado en 2020 por Apoorva Mahalingappa, estudiante de Ciencia de Datos en el Great Lakes Institute of Management (India), con el propósito de analizar las compras en línea y extraer tendencias comerciales.
 
 ### Descripción general
 
-El Dataset contiene información sobre miles de transacciones comerciales realizadas por usuarios a través de la red, entre el 1 de enero de 2011 y el 31 de diciembre de 2014. Incluye datos relevantes, como la información de los compradores, su lugar de residencia, los montos monetarios, detalles de los productos, etcétera.
+El Dataset contiene información sobre miles de transacciones comerciales realizadas por usuarios a través de la red, entre el 1 de enero de 2011 y el 31 de diciembre de 2014. Incluye datos relevantes, como la información de los compradores, su lugar de residencia, los montos y detalles de los productos, etcétera.
 
 El dataset es estático, pues tiene cierto carácter histórico, pero abarca un periodo de 4 años, lo que nos otorga una ventana de tiempo lo suficientemente amplia para identificar tendencias. Hay bastantes datos con los que se puede trabajar, además de que están relativamente en buena forma (i.e. no hay muchas inconsistencias), aunque hay renglones con datos faltantes (sobre todo en la columna "Postal Code"). 
 
@@ -57,35 +55,8 @@ El objetivo principal de este proyecto es analizar un conjunto de datos para ide
 
 ### Consideraciones éticas 
 * **Privacidad de los clientes:** Aunque es un dataset público y probablemente anónimo o sintético, incluye columnas como "Customer Name", que están vínculadas a ubicaciones geográficas (City, State, Postal Code). En un entorno real, exponer esta información implicaría violar la privacidad de los usuarios e infringir múltiples leyes.
-* **Sesgos:** La mayoría de los datos corresponden a Estados Unidos, por lo que nuestro análisis tendrá cierto sesgo geográfico. En consecuencia, no se considerarán patrones de compra en los mercados que no están representados en este dataset.
+* **Sesgos:** La mayoría de los datos corresponden a Estados Unidos, por lo que nuestro análisis tendrá cierto sesgo geográfico. En consecuencia, no se considerarán los patrones de compra en los mercados que no están representados en este dataset.
 
-## Documentación
-
-### Estructura del repositorio (MODIFICAR CON LOS NUESTROS)
-```
-├── README.md                                         <- Documentación para desarrolladores de este proyecto (i.e., reporte escrito)
-├── data
-│   ├── .gitignore
-│   └── raw_data.csv                                  <- Datos en formato CSV como vienen de la fuente original
-│
-├── pipeline_scripts                                  <- Scripts de SQL para ejecución del pipeline de datos
-│   ├── 01_raw_data_schema_creation_and_load.sql      <- Script de carga inicial (i.e., actividad B)
-│   ├── 02_data_cleaning.sql                          <- Script de limpieza de datos (i.e., actividad C)
-│   ├── 03_data_normalization.sql                     <- Script de normalización de relaciones (i.e., actividad D)
-│   └── 04_analytical_attributes_creation.sql         <- Script de creación de atributos analíticos (i.e., actividad E)
-│
-└── exploration_queries                               <- Scripts de SQL para exploración de datos
-    ├── 01_raw_data_exploration.sql                   <- Consultas de exploración de datos en bruto (i.e., soporte de actividad B)
-    ├── ⋅⋅⋅                                           <- Otras consultas en caso de ser requeridas
-    └── 0N_analytical_queries.sql                     <- Consultas de interés sobre los datos normalizados (i.e., soporte de actividad E)
-```
-
-### Requerimientos para replicación del proyecto (MODIFICAR!!!!!!!)
-
-1. Descargar los datos en bruto del proyecto de acuerdo a las instrucciones del apartado de [Fuente de datos](#fuente-de-datos).
-2. Contar con `postgres 16` o superior instalado en la computadora o servidor donde se replicará el proyecto.
-3. Contar con una base de datos exclusiva para este proyecto. Todas las instrucciones del proyecto asumen que la sesión está conectada a la misma base de datos.
-4. ...
 5. El resto de las intrucciones asumen que el directorio de trabajo para `psql` es la raíz de este proyecto.
 
 ## Carga inicial
