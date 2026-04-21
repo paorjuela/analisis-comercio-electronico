@@ -2,7 +2,7 @@
 
 ## Integrantes
 - [Alberto Alessandro Gómez Blanno](https://github.com/alezzanders-ctrl) — Clave: 218823
-- [](https://github.com/usuario3) — Clave: 
+- [María de Lourdes Gaul Vargas](https://github.com)) — Clave: 218758
 - [Paola María Orjuela Gaytán](https://github.com/paorjuela) — Clave: 216867
 
 ## Introducción 
