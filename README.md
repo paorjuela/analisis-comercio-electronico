@@ -56,9 +56,3 @@ El objetivo principal de este proyecto es analizar un conjunto de datos para ide
 ### Consideraciones éticas 
 * **Privacidad de los clientes:** Aunque es un dataset público y probablemente anónimo o sintético, incluye columnas como "Customer Name", que están vínculadas a ubicaciones geográficas (City, State, Postal Code). En un entorno real, exponer esta información implicaría violar la privacidad de los usuarios e infringir múltiples leyes.
 * **Sesgos:** La mayoría de los datos corresponden a Estados Unidos, por lo que nuestro análisis tendrá cierto sesgo geográfico. En consecuencia, no se considerarán los patrones de compra en los mercados que no están representados en este dataset.
-
-5. El resto de las intrucciones asumen que el directorio de trabajo para `psql` es la raíz de este proyecto.
-
-## Carga inicial
-
-A
