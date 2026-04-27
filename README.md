@@ -10,6 +10,9 @@
 
 Para este proyecto se utilizan datos obtenidos de Kaggle, específicamente del conjunto [Global Super Store Dataset](https://www.kaggle.com/datasets/apoorvaappz/global-super-store-dataset/data). Este dataset fue recopilado en 2020 por Apoorva Mahalingappa, estudiante de Ciencia de Datos en el Great Lakes Institute of Management (India), con el propósito de analizar las compras en línea y extraer tendencias comerciales.
 
+>  Las instrucciones de replicación del proyecto asumen que los datos se encuentran almacenados en formato
+`CSV`, bajo el nombre `./data/raw_data.csv`.
+
 ### Descripción general
 
 El Dataset contiene información sobre miles de transacciones comerciales realizadas por usuarios a través de la red, entre el 1 de enero de 2011 y el 31 de diciembre de 2014. Incluye datos relevantes, como la información de los compradores, su lugar de residencia, los montos y detalles de los productos, etcétera.
@@ -56,3 +59,42 @@ El objetivo principal de este proyecto es analizar un conjunto de datos para ide
 ### Consideraciones éticas 
 * **Privacidad de los clientes:** Aunque es un dataset público y probablemente anónimo o sintético, incluye columnas como "Customer Name", que están vínculadas a ubicaciones geográficas (City, State, Postal Code). En un entorno real, exponer esta información implicaría violar la privacidad de los usuarios e infringir múltiples leyes.
 * **Sesgos:** La mayoría de los datos corresponden a Estados Unidos, por lo que nuestro análisis tendrá cierto sesgo geográfico. En consecuencia, no se considerarán los patrones de compra en los mercados que no están representados en este dataset.
+
+## Documentación
+
+### Estructura del repositorio
+
+```
+├── README.md                                         <- Documentación para desarrolladores de este proyecto (i.e., reporte escrito)
+
+```
+
+### Requerimientos para replicación del proyecto
+
+1. Descargar los datos en bruto del proyecto de acuerdo a las instrucciones del apartado de [Fuente de datos](#fuente-de-datos).
+2. Contar con `postgres 17.5` o superior instalado en la computadora o en el servidor donde se replicará el proyecto.
+3. Contar con una base de datos exclusiva para este proyecto. Todas las instrucciones del proyecto asumen que la sesión está conectada a la misma base de datos.
+4. ...
+5. El resto de las instrucciones asume que el directorio de trabajo de `psql` es la raíz de este proyecto.
+
+
+## Carga inicial
+
+En primer lugar, se deberá crear una base de datos exclusiva para este proyecto. Para ello se puede ejecutar el siguiente 
+comando en `psql`:
+
+```{psql}
+CREATE DATABASE comercio_electronico;;
+```
+
+Posteriormente, debemos conectarnos a dicha base de datos empleando:
+
+```{psql}
+\c comercio_electronico
+```
+
+Finalmente, para cargar los datos en bruto se debe ejecutar el siguiente comando en una sesión de línea de comandos `psql`:
+
+```{psql}
+\i pipeline_scripts/raw_data_scheme_creation.sql
+```
