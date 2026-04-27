@@ -11,7 +11,7 @@
 Para este proyecto se utilizan datos obtenidos de Kaggle, específicamente del conjunto [Global Super Store Dataset](https://www.kaggle.com/datasets/apoorvaappz/global-super-store-dataset/data). Este dataset fue recopilado en 2020 por Apoorva Mahalingappa, estudiante de Ciencia de Datos en el Great Lakes Institute of Management (India), con el propósito de analizar las compras en línea y extraer tendencias comerciales.
 
 >  Las instrucciones de replicación del proyecto asumen que los datos se encuentran almacenados en formato
-`CSV`, bajo el nombre `./data/raw_data.csv`.
+`CSV`, bajo la ruta `C:/Global_Superstore2.csv`.
 
 ### Descripción general
 
