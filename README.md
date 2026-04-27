@@ -10,8 +10,6 @@
 
 Para este proyecto se utilizan datos obtenidos de Kaggle, específicamente del conjunto [Global Super Store Dataset](https://www.kaggle.com/datasets/apoorvaappz/global-super-store-dataset/data). Este dataset fue recopilado en 2020 por Apoorva Mahalingappa, estudiante de Ciencia de Datos en el Great Lakes Institute of Management (India), con el propósito de analizar las compras en línea y extraer tendencias comerciales.
 
->  Las instrucciones de replicación del proyecto asumen que los datos se encuentran almacenados en formato
-`CSV`, bajo la ruta `C:/Global_Superstore2.csv`.
 
 ### Descripción general
 
@@ -71,7 +69,7 @@ El objetivo principal de este proyecto es analizar un conjunto de datos para ide
 
 ### Requerimientos para replicación del proyecto
 
-1. Descargar los datos en bruto del proyecto de acuerdo a las instrucciones del apartado de [Fuente de datos](#fuente-de-datos).
+1. Descargar los datos en bruto del proyecto (véase [Fuente de datos](#fuente-de-datos)).
 2. Contar con `postgres 17.5` o superior instalado en la computadora o en el servidor donde se replicará el proyecto.
 3. Contar con una base de datos exclusiva para este proyecto. Todas las instrucciones del proyecto asumen que la sesión está conectada a la misma base de datos.
 4. ...
@@ -93,8 +91,10 @@ Posteriormente, debemos conectarnos a dicha base de datos empleando:
 \c comercio_electronico
 ```
 
-Finalmente, para cargar los datos en bruto se debe ejecutar el siguiente comando en una sesión de línea de comandos `psql`:
+Ahora, en nuestro IDE, ejecutamos el script `raw_data_scheme_creation.sql`.
+
+Finalmente, ejecutamos el siguiente comando en una sesión de línea de comandos `psql`, donde `ruta_csv` es la ruta donde descargamos el archivo con los datos en bruto:
 
 ```{psql}
-\i pipeline_scripts/raw_data_scheme_creation.sql
+\copy orders FROM 'ruta_csv' WITH (FORMAT CSV, HEADER true, DELIMITER ',');
 ```
