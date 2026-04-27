@@ -29,6 +29,3 @@ CREATE TABLE raw.orders (
     shipping_cost NUMERIC(15,2),
     order_priority VARCHAR(20)
 );
-
-\COPY raw.orders (row_id, order_id, order_date, ship_date, ship_mode, customer_id, customer_name, segment, city, state, country, postal_code, market, region, product_id, category, sub_category, product_name, sales, quantity, discount, profit, shipping_cost, order_priority) FROM 'C:/Global_Superstore2.csv' WITH (FORMAT CSV, HEADER true, DELIMITER ',');
-
