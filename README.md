@@ -82,7 +82,7 @@ En primer lugar, se deberá crear una base de datos exclusiva para este proyecto
 comando en `psql`:
 
 ```{psql}
-CREATE DATABASE comercio_electronico;;
+CREATE DATABASE comercio_electronico;
 ```
 
 Posteriormente, debemos conectarnos a dicha base de datos empleando:
