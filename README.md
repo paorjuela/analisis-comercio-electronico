@@ -56,3 +56,55 @@ El objetivo principal de este proyecto es analizar un conjunto de datos para ide
 ### Consideraciones éticas 
 * **Privacidad de los clientes:** Aunque es un dataset público y probablemente anónimo o sintético, incluye columnas como "Customer Name", que están vínculadas a ubicaciones geográficas (City, State, Postal Code). En un entorno real, exponer esta información implicaría violar la privacidad de los usuarios e infringir múltiples leyes.
 * **Sesgos:** La mayoría de los datos corresponden a Estados Unidos, por lo que nuestro análisis tendrá cierto sesgo geográfico. En consecuencia, no se considerarán los patrones de compra en los mercados que no están representados en este dataset.
+
+### Carga inicial de postgres:
+  1. Clonar repositorio:
+     git clone https://github.com/paorjuela/analisis-comercio-electronico
+      cd analisis-comercio-electronico
+  2. Crear base de datos:
+     DROP DATABASE IF EXISTS superstore;
+     CREATE DATABASE superstore;
+     \c superstore
+  3. Cargar la tabla raw y el CSV
+     \i raw_data_scheme_creation.sql
+
+     *nota:* antes de ejecutar el script, se tiene que cambair la ruta a la ubicación local:
+             \copy orders FROM '/ruta/a/Global_Superstore2.csv' WITH (FORMAT CSV, HEADER true, DELIMITER ',');
+  5. Ejecutar los scripts en orden:
+     \i scripts/02_analisis_exploratorio.sql
+     \i scripts/03_limpieza.sql
+     \i scripts/04_normalizacion.sql
+     \i scripts/05_analisis.sql
+
+### *Carga Inicial y ánalisis preliminar*
+
+### Esqeuma inicial de carga:
+    La tala raw "orders" recibe todos los atributos del CSV sin normalizar. Usamos "row_id" como principal natural primary key, ya que cada tupla del dataset tiene una línea de pedido única.
+
+    CREATE TABLE orders (
+      row_id         INT PRIMARY KEY,
+      order_id       VARCHAR(50),
+      order_date     DATE,
+      ship_date      DATE,
+      ship_mode      VARCHAR(50),
+      customer_id    VARCHAR(50),
+      customer_name  VARCHAR(255),
+      segment        VARCHAR(50),
+      city           VARCHAR(100),
+      state          VARCHAR(100),
+      country        VARCHAR(100),
+      postal_code    VARCHAR(20),
+      market         VARCHAR(50),
+      region         VARCHAR(50),
+      product_id     VARCHAR(50),
+      category       VARCHAR(100),
+      sub_category   VARCHAR(100),
+      product_name   TEXT,
+      sales          NUMERIC(15,2),
+      quantity       INT,
+      discount       NUMERIC(5,2),
+      profit         NUMERIC(15,2),
+      shipping_cost  NUMERIC(15,2),
+      order_priority VARCHAR(20)
+    );
+    *nota:* todo el script creación y del ánalisis exploratorios se encuentran en  scripts/02_analisis_exploratorio.sql 
