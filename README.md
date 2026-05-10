@@ -126,5 +126,12 @@ En cuanto a atributos categóricos, hay varios, pero los interesantes son `categ
 
 Consulta `5` en `analisis_preliminar`.
 
-Por último, están los valores únicos: `order_id`, `product_id` y `customer_id`. Aquí es donde se presenta el problema (del que hable antes) más grande del data set. A pesar de ser _id's_, no determinan funcionalmente los atributos que representan. `customer_id` es el único que no presenta problemas. `product_id` tiene más de 500 tuplas donde el _id_ es el mismo, pero el nombre del producto es diferente (y una con una sub categoría). El peor, sin embargo, es `order_id` donde presenta problemas en multiples atributos, principalmente en  `order_date` y `customer_id`, donde más de 780 tuplas aparecen con el mismo _id_ pero fecha o cliente diferente. Da la impresión de que son ordenes completamente diferentes, pero asignadas al mismo _id_ por algún error. Este problema se resuelve durante el proceso de normalización de los datos.
+Por último, están los valores únicos: `order_id`, `product_id` y `customer_id`. Aquí es donde se presenta el problema (del que hable antes) más grande del data set. A pesar de ser _id's_, no determinan funcionalmente los atributos que representan. `customer_id` es el único que no presenta problemas. `product_id` tiene más de 500 tuplas donde el _id_ es el mismo, pero el nombre del producto es diferente (y una con una sub categoría). El peor, sin embargo, es `order_id` donde presenta problemas en multiples atributos, principalmente en  `order_date` y `customer_id`, donde más de 780 tuplas aparecen con el mismo _id_ pero fecha o cliente diferente. Da la impresión de que son ordenes completamente diferentes, pero asignadas al mismo _id_ por algún error.
 Consulta `6` en `analisis_preliminar`.
+
+
+## Limpieza de datos
+
+Gracias al análisis preliminar, se puede observar que el data set está en su mayoría limpio. Sin embargo, es cierto que presenta dos columnas redudantes (`row_id` y `postal_code`), las cuales podemos eliminar sin perdida de datos relevantes para el análisis futuro. En cuanto el problema con los _id's_, eso se va a resolver durante el proceso de normalización.
+
+El código para limpiar el data set esta en [limpieza.sql]()
