@@ -142,14 +142,14 @@ Con el encabezado
 
 $E=\{\text{order-id, customer-id, order-date, city, state, country, market, region, order-priority, customer-name, segment, product-id, category, sub-category, product-name, ship-date, ship-mode, shipping-cost, sales, cuantity, discount, profit}\}$
 
-intuitivamente (o idealmente) las dependencias funcionales encontradas en el data set son las siguientes,
+intuitivamente (o idealmente) las dependencias funcionales encontradas en el data set son,
 
 $$\{\text{order-id}\}\rightarrow\{\text{customer-id, order-date, city, state, country, market, region, order-priority}\}$$
 $$\{\text{customer-id}\}\rightarrow\{\text{customer-name, segment}\}$$
 $$\{\text{product-id}\}\rightarrow\{\text{category, sub-category, product-name}\}$$
 $$\{\text{order-id, product-id}\}\rightarrow\{\text{ship-date, ship-mode, shipping-cost, sales, cuantity, discount, profit}\}$$
 
-Sin embargo, la realidad es que estás no se cumplen debido al error en los _id's_ que se comento en la sección de **análisis preliminar**. Moviendo algunos de los elementos de la derecha a la izquierda, podemos encontrar DF que sí se cumplan en el data set y no afecte a la separación de tablas:
+Sin embargo, la realidad es que estás no se cumplen debido al error en los _id's_ que se comentó en la sección de **análisis preliminar**. Si movemos algunos de los elementos de la derecha a la izquierda, podemos encontrar $\text{DF}$ que sí se cumplan en el data set y no afecten a la separación de tablas:
 
 $$\{\text{order-id, customer-id, order-date}\}\rightarrow\{\text{city, state, country, market, region, order-priority}\}$$
 $$\{\text{customer-id}\}\rightarrow\{\text{customer-name, segment}\}$$
@@ -158,7 +158,7 @@ $$\{\text{order-id, customer-id, order-date, product-id, product-name, shipping-
 
 
 ### Forma normal Boyce-Codd (FNBC)
-Gracias a estás nuevas dependencias funcionales, podemos separar $E$ en cuatro $\text{Relvars}$ nuevas.
+Gracias a estás nuevas dependencias funcionales podemos separar $E$ en cuatro $\text{Relvars}$ nuevas.
 
 $$E_{order}=\text{order-id, customer-id, order-date, city, state, country, market, region, order-priority}$$
 $$E_{customer}=\text{customer-id, customer-name, segment}$$
