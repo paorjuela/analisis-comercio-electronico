@@ -135,3 +135,46 @@ Consulta `6` en `analisis_preliminar`.
 Gracias al análisis preliminar, se puede observar que el data set está en su mayoría limpio. Sin embargo, es cierto que presenta dos columnas redudantes (`row_id` y `postal_code`), las cuales podemos eliminar sin perdida de datos relevantes para el análisis futuro. En cuanto el problema con los _id's_, eso se va a resolver durante el proceso de normalización (donde sustituiremos los _id's_ originales con los artificiales generados al separar las tablas).
 
 El código para limpiar el data set esta en [limpieza.sql](https://github.com/paorjuela/analisis-comercio-electronico/blob/limpieza-datos/limpieza.sql).
+
+
+## Normalización de tablas
+Con el encabezado
+
+$E=\{\text{order-id, customer-id, order-date, city, state, country, market, region, order-priority, customer-name, segment, product-id, category, sub-category, product-name, ship-date, ship-mode, shipping-cost, sales, cuantity, discount, profit}\}$
+
+intuitivamente (o idealmente) las dependencias funcionales encontradas en el data set son las siguientes,
+
+$$\{\text{order-id}\}\rightarrow\{\text{customer-id, order-date, city, state, country, market, region, order-priority}\}$$
+$$\{\text{customer-id}\}\rightarrow\{\text{customer-name, segment}\}$$
+$$\{\text{product-id}\}\rightarrow\{\text{category, sub-category, product-name}\}$$
+$$\{\text{order-id, product-id}\}\rightarrow\{\text{ship-date, ship-mode, shipping-cost, sales, cuantity, discount, profit}\}$$
+
+Sin embargo, la realidad es que estás no se cumplen debido al error en los _id's_ que se comento en la sección de **análisis preliminar**. Moviendo algunos de los elementos de la derecha a la izquierda, podemos encontrar DF que sí se cumplan en el data set y no afecte a la separación de tablas:
+
+$$\{\text{order-id, customer-id, order-date}\}\rightarrow\{\text{city, state, country, market, region, order-priority}\}$$
+$$\{\text{customer-id}\}\rightarrow\{\text{customer-name, segment}\}$$
+$$\{\text{product-id, product-name}\}\rightarrow\{\text{category, sub-category}\}$$
+$$\{\text{order-id, customer-id, order-date, product-id, product-name, shipping-cost}\}\rightarrow\{\text{ship-date, ship-mode, sales, cuantity, discount, profit}\}$$
+
+
+### Forma normal Boyce-Codd (FNBC)
+Gracias a estás nuevas dependencias funcionales, podemos separar $E$ en cuatro $\text{Relvars}$ nuevas.
+
+$$E_{order}=\text{order-id, customer-id, order-date, city, state, country, market, region, order-priority}$$
+$$E_{customer}=\text{customer-id, customer-name, segment}$$
+$$E_{product}=\text{product-id, product-name, category, sub-category}$$
+$$E_{order-product}=\text{order-id, customer-id, order-date, product-id, product-name, shipping-cost, ship-date, ship-mode, sales, cuantity, discount, profit}$$
+
+Si consideramos los _id's_ artificiales de `sql` y los definimos como
+
+$$\text{order-id'}=\text{order-id, customer-id, order-date}$$
+$$\text{customer-id'}=\text{customer-id}$$
+$$\text{product-id'}=\text{product-id, product-name}$$
+$$\text{order-product-id'}=\text{order-id', product-id', shipping-cost}$$
+
+obtenemos (finalmente) los encabezados
+
+$$E_{order}=\text{order-id', customer-id', order-date, city, state, country, market, region, order-priority}$$
+$$E_{customer}=\text{customer-id', customer-name, segment}$$
+$$E_{product}=\text{product-id', product-name, category, sub-category}$$
+$$E_{order-product}=\text{order-product-id', order-id', product-id', shipping-cost, ship-date, ship-mode, sales, cuantity, discount, profit}$$
