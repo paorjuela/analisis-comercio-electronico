@@ -1,9 +1,9 @@
-DROP SCHEMA IF EXISTS raw CASCADE;
-CREATE SCHEMA IF NOT EXISTS raw;
+DROP SCHEMA IF EXISTS "raw" CASCADE;
+CREATE SCHEMA IF NOT EXISTS "raw";
 
-DROP TABLE IF EXISTS raw.orders;
+DROP TABLE IF EXISTS "raw".orders;
 
-CREATE TABLE raw.orders (
+CREATE TABLE "raw".orders (
     row_id INT PRIMARY KEY,
     order_id VARCHAR(50),
     order_date DATE,
@@ -13,7 +13,7 @@ CREATE TABLE raw.orders (
     customer_name VARCHAR(255),
     segment VARCHAR(50),
     city VARCHAR(100),
-    state VARCHAR(100),
+    "state" VARCHAR(100),
     country VARCHAR(100),
     postal_code VARCHAR(20),
     market VARCHAR(50),
