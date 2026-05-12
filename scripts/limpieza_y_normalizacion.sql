@@ -291,11 +291,8 @@ CREATE TABLE norm.order_product (
     	discount NUMERIC(5,2),
     	profit NUMERIC(15,2),
 
-    	FOREIGN KEY (order_id)   REFERENCES norm."order"(id)  ON DELETE RESTRICT,
-    	FOREIGN KEY (product_id) REFERENCES norm.product(id)  ON DELETE RESTRICT,
-
-	-- shipping_cost es una metrica, no parte de la clave natural
-	CONSTRAINT unique_order_id_product_id UNIQUE (order_id, product_id)
+    	FOREIGN KEY (order_id)   REFERENCES norm."order"(id) ON DELETE RESTRICT,
+    	FOREIGN KEY (product_id) REFERENCES norm.product(id) ON DELETE RESTRICT
 );
 
 --poblar tabla order_product
