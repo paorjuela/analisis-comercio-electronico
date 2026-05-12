@@ -96,7 +96,7 @@ Ahora, en nuestro IDE, ejecutamos el script [raw_data_scheme_creation.sql](https
 Finalmente, ejecutamos el siguiente comando en una sesión de línea de comandos `psql`, donde `ruta_csv` es la ruta donde descargamos el archivo con los datos en bruto:
 
 ```{psql}
-\copy raw.orders FROM 'ruta_csv' WITH (FORMAT CSV, HEADER true, DELIMITER ',');
+\copy "raw".orders FROM 'ruta_csv' WITH (FORMAT CSV, HEADER true, DELIMITER ',');
 ```
 
 
