@@ -95,7 +95,7 @@ Posteriormente, debemos conectarnos a dicha base de datos empleando:
 \c comercio_electronico
 ```
 
-Ahora, en nuestro IDE, ejecutamos el script [raw_data_scheme_creation.sql](https://github.com/paorjuela/analisis-comercio-electronico/blob/carga-datos/raw_data_scheme_creation.sql).
+Ahora, en nuestro IDE, ejecutamos el script [raw_data_scheme_creation.sql](/scripts/raw_data_scheme_creation.sql).
 
 Finalmente, ejecutamos el siguiente comando en una sesión de línea de comandos `psql`, donde `ruta_csv` es la ruta donde descargamos el archivo con los datos en bruto:
 
@@ -105,7 +105,7 @@ Finalmente, ejecutamos el siguiente comando en una sesión de línea de comandos
 
 ## Análisis Preliminar
 
-> **Nota:** Todas las consultas ejecutadas para este análisis se encuentran en el archivo [analisis_preliminar.sql](https://github.com/paorjuela/analisis-comercio-electronico/blob/limpieza-datos/analisis_preliminar.sql). Cada consulta está clasificada y nombrada según la observación correspondiente.
+> **Nota:** Todas las consultas ejecutadas para este análisis se encuentran en el archivo [analisis_preliminar.sql](/scripts/analisis_preliminar.sql). Cada consulta está clasificada y nombrada según la observación correspondiente.
 
 ### Consulta `1` en `analisis_preliminar`
 Se identificó que la columna `postal_code` contiene más de 40,000 valores `null`, lo que representa aproximadamente el 80% de las tuplas del dataset. Debido a esta falta de representatividad, clasificamos esta columna como redundante, ya que no aporta información relevante para un análisis más profundo.
@@ -133,7 +133,7 @@ Por último, están los valores únicos: `order_id`, `product_id` y `customer_id
 
 
 ## Limpieza de datos y normalización de tablas
-El script para estas operaciones se encuentra en [limpieza-y-normalizacion.sql](https://github.com/paorjuela/analisis-comercio-electronico/blob/limpieza-datos/analisis_preliminar.sql).
+El script para estas operaciones se encuentra en [limpieza-y-normalizacion.sql](/scripts/limpieza_y_normalizacion.sql).
 
 Tras el análisis preliminar, se identificaron dos columnas redundantes, `row_id` y `postal_code`, cuya eliminación no supone una pérdida de información relevante. El problema detectado con la duplicidad de IDs (donde un mismo ID puede referirse a entidades distintas) se resuelve durante la normalización mediante la generación de claves artificiales.
 
@@ -243,7 +243,7 @@ ALTER TABLE norm.customer DROP COLUMN customer_id;
 Después de que `raw.orders` ya apunta al `id` artificial, el `customer_id` de texto en `norm.customer` deja de ser necesario como columna, pues su función era servir de puente durante la migración. Eliminarlo evita redundancia y deja la tabla con únicamente los atributos que le corresponden según la $\text{DF}$.
  
 ---
-Después de `limpieza-y-normalizacion`, se tiene:
+Después de ejecutar el script [limpieza-y-normalizacion.sql](/scripts/limpieza_y_normalizacion.sql), se tiene:
 
 ![ERD](/ERD.png)
 
