@@ -1,143 +1,112 @@
-SELECT *
-FROM "raw".orders;
+--E) Análisis de datos mediante consultas
 
-/*Consulta 1: Conteo y observación de nulls en la columna postal_code.*/--------------------------------
+-- 1era consulta
+-- Ventas anuales y rentabilidad
+-- Para ver cuánto dinero entra y cuánto queda de ganancia cada año
+SELECT
+    EXTRACT(YEAR FROM ordenes.order_date) AS anio,
+    COUNT(DISTINCT ordenes.id) AS total_pedidos,
+    ROUND(SUM(detalles.sales)::NUMERIC, 2) AS ventas_totales,
+    ROUND(SUM(detalles.profit)::NUMERIC, 2) AS ganancia_total,
+    ROUND(SUM(detalles.profit) / SUM(detalles.sales) * 100, 2) AS margen_porcentual --el margen de ganancia porcentual
+FROM norm.order_product AS detalles
+JOIN norm."order" AS ordenes ON detalles.order_id = ordenes.id
+GROUP BY anio
+ORDER BY anio;
 
-SELECT postal_code
-FROM "raw".orders;
+-- 2da consulta
+-- Rentabilidad por categoría de producto
+-- Para identificar qué tipos de productos dejan más margen
+SELECT
+    productos.category AS categoria,
+    productos.sub_category AS subcategoria,
+    COUNT(DISTINCT detalles.order_id) AS total_pedidos,
+    ROUND(SUM(detalles.sales)::NUMERIC, 2) AS ventas_totales,
+    ROUND(SUM(detalles.profit)::NUMERIC, 2) AS ganancia_total,
+    ROUND(SUM(detalles.profit) / SUM(detalles.sales) * 100, 2) AS margen_porcentual
+FROM norm.order_product AS detalles
+JOIN norm.product AS productos ON detalles.product_id = productos.id
+GROUP BY categoria, subcategoria
+ORDER BY margen_porcentual DESC;
 
-SELECT COUNT(postal_code)
-FROM "raw".orders;
+-- 3era consulta
+-- Análisis de mercados y regiones
+SELECT
+    geografia.market AS mercado,
+    geografia.region AS region,
+    COUNT(DISTINCT ordenes.id) AS total_pedidos,
+    ROUND(SUM(detalles.sales)::NUMERIC, 2) AS ventas_totales,
+    ROUND(SUM(detalles.profit)::NUMERIC, 2) AS ganancia_total,
+    ROUND(SUM(detalles.profit) / SUM(detalles.sales) * 100, 2) AS margen_porcentual
+FROM norm.order_product AS detalles
+JOIN norm."order" AS ordenes ON detalles.order_id = ordenes.id
+JOIN norm.geography AS geografia ON ordenes.geography_id = geografia.id
+GROUP BY mercado, region
+ORDER BY ventas_totales DESC;
 
+-- 4ta consulta
+-- Análisis de segmentos de clientes
+SELECT
+    clientes.segment AS segmento,
+    COUNT(DISTINCT ordenes.id) AS total_pedidos,
+    ROUND(SUM(detalles.sales)::NUMERIC, 2) AS ventas_totales,
+    ROUND(SUM(detalles.profit)::NUMERIC, 2) AS ganancia_total,
+    ROUND(SUM(detalles.profit) / SUM(detalles.sales) * 100, 2) AS margen_porcentual,
+    ROUND(SUM(detalles.sales) / COUNT(DISTINCT ordenes.id), 2) AS valor_pedido_promedio
+FROM norm.order_product AS detalles
+JOIN norm."order" AS ordenes ON detalles.order_id = ordenes.id
+JOIN norm.customer AS clientes ON ordenes.customer_id = clientes.id
+GROUP BY segmento
+ORDER BY margen_porcentual DESC;
 
-/*Consulta 2: Máximos y mínimos de fechas.*/------------------------------------------------------------
+-- 5ta consulta
+-- "Mejores" clientes por segmento
+SELECT
+    clientes.customer_name AS nombre_cliente,
+    clientes.segment AS segmento,
+    COUNT(DISTINCT ordenes.id) AS total_pedidos,
+    ROUND(SUM(detalles.sales)::NUMERIC, 2) AS ventas_totales,
+    ROUND(SUM(detalles.profit)::NUMERIC, 2) AS ganancia_total,
+    RANK() OVER (
+        PARTITION BY clientes.segment
+        ORDER BY SUM(detalles.profit) DESC
+    ) AS ranking_en_segmento
+FROM norm.order_product AS detalles
+JOIN norm."order" AS ordenes ON detalles.order_id = ordenes.id
+JOIN norm.customer AS clientes ON ordenes.customer_id = clientes.id
+GROUP BY nombre_cliente, segmento
+ORDER BY ganancia_total DESC
+LIMIT 10;
 
---máximos y mínimos de la fecha de oreden.
-SELECT MAX(order_date)
-FROM "raw".orders;
+-- 6ta consulta
+-- "Mejores" tipos de envío
+-- Cuánto se tarda en enviar? y cuánto cuesta según el tipo de envío?
+SELECT
+    ventas.ship_mode AS metodo_envio,
+    ROUND(AVG(ventas.ship_date - pedidos.order_date), 2) AS promedio_dias_envio,
+    MIN(ventas.ship_date - pedidos.order_date) AS dias_minimo,
+    MAX(ventas.ship_date - pedidos.order_date) AS dias_maximo,
+    ROUND(SUM(ventas.shipping_cost)::NUMERIC, 2) AS gasto_total_envio
+FROM norm.order_product AS ventas
+JOIN norm."order" AS pedidos ON ventas.order_id = pedidos.id
+GROUP BY metodo_envio
+ORDER BY promedio_dias_envio;
 
-SELECT MIN(order_date)
-FROM "raw".orders;
-
---máximos y mínimos de la fecha de envío.
-SELECT MAX(ship_date)
-FROM "raw".orders;
-
-SELECT MIN(ship_date)
-FROM "raw".orders;
-
-
-/*Consulta 3: Promedios de costos y ganancias.*/--------------------------------------------------------
-
---promedio de ingresos.
-SELECT SUM(sales)
-FROM "raw".orders;
-
---promedio de ganancia.
-SELECT SUM(profit)
-FROM "raw".orders;
-
---promedio de costo de envio.
-SELECT SUM(shipping_cost)
-FROM "raw".orders;
-
-
-/*Consulta 4: Total de productos vendidos.*/------------------------------------------------------------
-
-SELECT SUM(quantity)
-FROM "raw".orders;
-
-
-/*Consulta 5: Datos categoricos.*/----------------------------------------------------------------------
-
---categorias de producto.
-SELECT DISTINCT(category)
-FROM "raw".orders
-ORDER BY category;
-
-SELECT DISTINCT(sub_category)
-FROM "raw".orders
-ORDER BY sub_category;
-
---categorias de localización.
-SELECT DISTINCT(country)
-FROM "raw".orders
-ORDER BY country;
-
-SELECT DISTINCT("state")
-FROM "raw".orders
-ORDER BY "state";
-
-SELECT DISTINCT(city)
-FROM "raw".orders
-ORDER BY city;
-
-SELECT DISTINCT(market)
-FROM "raw".orders
-ORDER BY market;
-
-SELECT DISTINCT(region)
-FROM "raw".orders
-ORDER BY region;
-
---categorias de orden.
-SELECT DISTINCT(order_priority)
-FROM "raw".orders
-ORDER BY order_priority;
-
---categorias de envío.
-SELECT DISTINCT(ship_mode)
-FROM "raw".orders
-ORDER BY ship_mode;
-
---categorias de cliente.
-SELECT DISTINCT(segment)
-FROM "raw".orders
-ORDER BY segment;
-
-
-/*Consulta 6: Valores únicos.*/-------------------------------------------------------------------------
-
---dependencia funcional en cutomer_id (se cumple si no aparece nada).
-WITH unicos AS (
-	SELECT DISTINCT customer_id,
-		   customer_name,
-		   segment
-	FROM "raw".orders
-	ORDER BY customer_id
+-- top 3 productos más rentables por categoria
+WITH ProductosCalculados AS (
+    SELECT -- ganancias por producto
+        p.category,
+        p.product_name,
+        SUM(op.profit) AS ganancia_producto,
+        RANK() OVER (
+            PARTITION BY p.category
+            ORDER BY SUM(op.profit) DESC
+        ) AS posicion
+    FROM norm.order_product op
+    JOIN norm.product p ON op.product_id = p.id
+    GROUP BY p.category, p.product_name
 )
 SELECT *
-FROM unicos AS t1
-JOIN unicos AS t2 ON t1.customer_id = t2.customer_id
-	              AND (t1.customer_name != t2.customer_name
-	              OR t1.segment != t2.segment);
-
---dependencia funcional en product_id (se cumple si no aparece nada).
-WITH unicos AS (
-	SELECT DISTINCT product_id,
-		   category,
-		   sub_category,
-		   product_name
-	FROM "raw".orders
-	ORDER BY product_id
-)
-SELECT *
-FROM unicos AS t1
-JOIN unicos AS t2 ON t1.product_id = t2.product_id
-	              AND (t1.category != t2.category
-	              OR t1.sub_category != t2.sub_category
-	              OR t1.product_name != t2.product_name);
-
---dependencia funcional en order_id (se cumple si no aparece nada).
-WITH unicos AS (
-	SELECT DISTINCT order_id,
-		   order_date,
-		   customer_id
-	FROM "raw".orders
-	ORDER BY order_id
-)
-SELECT *
-FROM unicos AS t1
-JOIN unicos AS t2 ON t1.order_id = t2.order_id
-	              AND (t1.order_date != t2.order_date
-	              OR t1.customer_id != t2.customer_id);
+FROM ProductosCalculados
+WHERE posicion <= 3
+ORDER BY category, posicion;
